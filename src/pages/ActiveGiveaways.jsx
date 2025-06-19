@@ -92,8 +92,18 @@ export default function ActiveGiveaways({ signer }) {
       setGiveaways((prev) =>
         prev.map((g) => (g.id === giveawayId ? { ...g, finalizing: true } : g))
       );
-      const tx = await contract.requestRandomWinner(giveawayId);
-      await tx.wait();
+      // const tx = await contract.requestRandomWinner(giveawayId);
+      // await tx.wait();
+      try {
+        const tx = await contract.requestRandomWinner(giveawayId, false);
+        await tx.wait();
+      } catch (err) {
+        console.error("Finalize failed", err);
+
+        const reason = err?.error?.message || err?.reason || err?.message || "Unknown error";
+        alert("❌ Finalize failed:\n" + reason);
+      }
+
       alert("🔮 Randomness requested!");
     } catch (err) {
       console.error("Finalize failed", err);
