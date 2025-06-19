@@ -1,0 +1,81 @@
+/* General Reset + Base Theme */
+body {
+  margin: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f8f9fa;
+  color: #212529;
+}
+
+h1, h2, h3 {
+  font-weight: 600;
+}
+
+a {
+  text-decoration: none;
+}
+
+/* Sidebar Styling */
+.bg-dark {
+  background-color: #1f1f2e !important;
+}
+
+.nav-link {
+  color: #f1f1f1;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  transition: background 0.2s ease;
+}
+
+.nav-link:hover {
+  background-color: #343a40;
+}
+
+.nav-link.active {
+  background-color: #198754;
+  color: white !important;
+}
+
+/* Wallet Connect Text */
+.wallet-connect {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+/* Card Tweaks */
+.card {
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+}
+
+/* Button Tweaks */
+button {
+  border-radius: 6px !important;
+}
+
+/* Responsive Sidebar Collapse (optional for mobile) */
+@media (max-width: 768px) {
+  .vh-100 {
+    height: auto !important;
+  }
+  .sidebar {
+    width: 100%;
+    position: relative;
+  }
+}
+
+/* Toasts (for later) */
+.toast {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 9999;
+  background: white;
+  border: 1px solid #ddd;
+  padding: 1rem;
+  border-radius: 8px;
+}
