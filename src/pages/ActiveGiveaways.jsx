@@ -1,20 +1,3 @@
-# React + Vite
-
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
-
-
-
-
-
 import { useEffect, useState } from "react";
 import { getContract } from "../utils/contract";
 import { ethers } from "ethers";
@@ -47,8 +30,10 @@ export default function ActiveGiveaways({ signer }) {
             participants: participants.length,
             maxParticipants: g.maxParticipants.toString(),
             endTime: new Date(Number(g.endTime) * 1000).toLocaleString(),
+            endTimestamp: Number(g.endTime),
             isCreator: g.creator.toLowerCase() === userAddress.toLowerCase(),
             showParticipants: false,
+            numWinners: g.numWinners.toString(),
             participantList: [],
             finalizing: false,
           };
@@ -105,12 +90,16 @@ export default function ActiveGiveaways({ signer }) {
       setGiveaways((prev) =>
         prev.map((g) => (g.id === giveawayId ? { ...g, finalizing: true } : g))
       );
-      const tx = await contract.requestRandomWinner(giveawayId);
+      const tx = await contract.requestRandomWinner(giveawayId, { gasLimit: 200000 });
       await tx.wait();
       alert("Randomness requested!");
     } catch (err) {
       console.error("Finalize failed", err);
-      alert(err?.reason || "Finalize failed");
+        alert(
+            err?.error?.message ||
+            err?.reason ||
+            "Giveaway may still be active or have too few participants."
+        );
     } finally {
       setGiveaways((prev) =>
         prev.map((g) => (g.id === giveawayId ? { ...g, finalizing: false } : g))
@@ -175,6 +164,11 @@ export default function ActiveGiveaways({ signer }) {
             <button onClick={() => fetchParticipants(g.id)} style={{ marginLeft: "10px" }}>
               Show Participants
             </button>
+
+            <p>Ends In: {Math.floor((g.endTimestamp - Date.now() / 1000))} seconds</p>
+            <p>Num Winners: {g.numWinners}</p>
+            <p>Creator View: {g.isCreator ? "Yes" : "No"}</p>
+
 
             {g.showParticipants && (
               <ul style={{ marginTop: "10px" }}>
