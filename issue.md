@@ -95,8 +95,10 @@ const finalizeGiveaway = async (giveawayId) => {
 ```
 
 ## ✅ Conditions at Time of Call
-Giveaway has ended
-Maximum participants reached
-The caller is the creator
+Giveaway has ended,  
+Maximum participants reached, 
+The caller is the creator, 
 Chainlink VRF is used (v2+)
+
+### And they meet still the error persists..
 
